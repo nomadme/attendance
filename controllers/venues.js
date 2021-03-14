@@ -1,4 +1,5 @@
 const Venue = require('../models/Venue')
+const ErrorResponse = require('../utilities/errorResponse')
 
 // @desc    Get all venues
 // @route   Get /v1/venues
@@ -18,11 +19,11 @@ exports.getVenues = async (req, res, next) => {
 exports.getVenue = async (req, res, next) => {
   try {
     const venue = await Venue.findById(req.params.id)
-    if (!venue) return res.status(400).json({success: false, message: 'venue does not exist', data: []})
+    if (!venue) return next(new ErrorResponse('Venue does not exit', 404))
 
     res.status(200).json({success: true, message: `Listing venue id: ${req.params.id}`, data: venue})
   } catch (e) {
-    next(e)
+    next(new ErrorResponse(e.message, 404))
   }
 
 }
