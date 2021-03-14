@@ -59,15 +59,7 @@ const VenueSchema = new mongoose.Schema({
   photo: {
     type: String,
     default: 'no-photo.jpg'
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now
   }
-})
+}, {timestamps: true})
 
 module.exports = mongoose.model('Venue', VenueSchema)
