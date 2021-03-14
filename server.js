@@ -7,9 +7,15 @@ const venue = [
 const server = http.createServer((req, res) => {
   const {headers, url, method} = req
   res.setHeader('Content-Type', 'application/json')
+  res.writeHead(400, {
+    'Content-Type': 'application/json',
+    'X-Powered-By': 'Node.js'
+  })
+
   res.end(
     JSON.stringify({
-      success:true,
+      success:false,
+      error: 'Test failed',
       data: venue
     })
   )
