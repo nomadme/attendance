@@ -25,7 +25,20 @@ const server = http.createServer((req, res) => {
       response.success = true
       response.data = venues
     } else if (method === 'POST' && url === '/venues') {
-      const {id, name} = JSON.parse(body);
+      //check if the body is valid json text that can be parsed.
+      try {
+        const {id, name} = JSON.parse(body);
+      } catch (e) {
+        status = 400
+        response.data = e
+        console.log(e)
+        res.writeHead(status, {
+          'Content-Type': 'application/json',
+          'X-Powered-By': 'Node.js'
+        })
+        return res.end(JSON.stringify(response))
+      }
+
 
       if (!id || !name) {
         status = 400;
