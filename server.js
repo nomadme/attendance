@@ -12,10 +12,19 @@ const server = http.createServer((req, res) => {
     'X-Powered-By': 'Node.js'
   })
 
+  let body = []
+  req.on('data', chunk => {
+    body.push(chunk)
+  }).on('end', () => {
+    console.log(body)
+    body = Buffer.concat(body).toString();
+    console.log(body)
+  })
+
   res.end(
     JSON.stringify({
-      success:false,
-      error: 'Test failed',
+      success:true,
+      error: 'bar received',
       data: venue
     })
   )
