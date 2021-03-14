@@ -1,3 +1,5 @@
+const Venue = require('../models/Venue')
+
 // @desc    Get all venues
 // @route   Get /v1/venues
 // @access  Public
@@ -15,8 +17,17 @@ exports.getVenue = (req, res, next) => {
 // @desc    Create venue
 // @route   POST /v1/venues
 // @access  Private
-exports.createVenue = (req, res, next) => {
-  res.status(200).json({success: true, message: 'Created venue'})
+exports.createVenue = async (req, res, next) => {
+  console.log(req.body)
+  try {
+    const venue = await Venue.create(req.body)
+    res.status(201).json({success: true, message: 'Created venue', data: venue})
+  } catch (e) {
+    res.status(400).json({success: false, message: e.message, data: req.body})
+  }
+
+
+
 }
 
 // @desc    Update venue
