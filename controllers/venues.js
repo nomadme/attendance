@@ -45,15 +45,27 @@ exports.createVenue = async (req, res, next) => {
 // @route   PUT /v1/venues/:id
 // @access  Private
 exports.updateVenue = async (req, res, next) => {
-  // try {
-  //   const venue = await Venue.updateOne()
-  // }
-  res.status(200).json({success: true, message: `Updating venue id: ${req.params.id}`, data: []})
+  try {
+    const venue = await Venue.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true
+    })
+    if(!venue) return res.status(400).json({success: false, message: 'id provided, does not exist', data: []})
+    res.status(200).json({success: true, message: `Updated venue id: ${req.params.id}`, data: venue})
+  } catch (e) {
+    res.status(400).json({success: true, message: e.message, data: req.body})
+  }
 }
 
 // @desc    Delete venue
 // @route   DELETE /v1/venues/:id
 // @access  Private
-exports.deleteVenue = (req, res, next) => {
-  res.status(200).json({success: true, message: `Deleting venue id: ${req.params.id}`, data: []})
+exports.deleteVenue = async (req, res, next) => {
+  try {
+    const venue = await Venue.findByIdAndDelete(req.params.id)
+    if(!venue) return res.status(400).json({success: false, message: 'id provided, does not exist', data: []})
+    res.status(200).json({success: true, message: `Deleted venue id: ${req.params.id}`})
+  } catch (e) {
+    res.status(400).json({success: true, message: e.message, data: req.body})
+  }
 }
