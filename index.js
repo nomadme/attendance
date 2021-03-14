@@ -3,6 +3,7 @@ const dotenv = require('dotenv')
 const morgan = require('morgan')
 const colors = require('colors')
 const connectDB = require('./config/db')
+const errorHandler = require('./middleware/errorHandler')
 
 // routes
 const venuesRoutes = require('./routes/venues')
@@ -24,6 +25,7 @@ if(process.env.NODE_ENV === 'development') {
 
 // route
 app.use('/v1/venues', venuesRoutes)
+app.use(errorHandler)
 
 const port = process.env.PORT || 5000
 const server = app.listen(port, () => {
