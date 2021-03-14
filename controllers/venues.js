@@ -22,7 +22,7 @@ exports.getVenue = async (req, res, next) => {
 
     res.status(200).json({success: true, message: `Listing venue id: ${req.params.id}`, data: venue})
   } catch (e) {
-    res.status(400).json({success: false, message: e.message, data: []})
+    next(e)
   }
 
 }
