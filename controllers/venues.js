@@ -6,11 +6,10 @@ const Venue = require('../models/Venue')
 exports.getVenues = async (req, res, next) => {
   try {
     const venues = await Venue.find()
-    res.status(200).json({success: true, message: 'Listing all venues', data: venues})
+    res.status(200).json({success: true, count: venues.length, data: venues})
   } catch (e) {
     res.status(400).json({success: false, message: e.message, data: []})
   }
-
 }
 
 // @desc    Get single venue
