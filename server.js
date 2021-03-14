@@ -1,33 +1,50 @@
 const http = require('http')
 
-const venue = [
-  {id:1, name: "Dallas Convention Center"}
+const venues = [
+  {id:1, name: "Dallas Convention Center"},
+  {id:2, name: "GrapeVine Convention Center"},
 ]
 
 const server = http.createServer((req, res) => {
   const {headers, url, method} = req
-  res.setHeader('Content-Type', 'application/json')
-  res.writeHead(400, {
-    'Content-Type': 'application/json',
-    'X-Powered-By': 'Node.js'
-  })
-
   let body = []
+
   req.on('data', chunk => {
     body.push(chunk)
   }).on('end', () => {
-    console.log(body)
-    body = Buffer.concat(body).toString();
-    console.log(body)
+    body = Buffer.concat(body).toString()
+
+    let status = 400
+    const response = {
+      success:false,
+      data: null
+    }
+
+    if(method === 'GET' && url === '/venues') {
+      status = 200
+      response.success = true
+      response.data = venues
+    } else if (method === 'POST' && url === '/venues') {
+      const {id, name} = JSON.parse(body);
+
+      if (!id || !name) {
+        status = 400;
+      } else {
+        venues.push({id, name})
+        status = 201
+        response.success = true
+        response.data = venues
+      }
+    }
+
+    res.writeHead(status, {
+      'Content-Type': 'application/json',
+      'X-Powered-By': 'Node.js'
+    })
+    res.end(JSON.stringify(response))
   })
 
-  res.end(
-    JSON.stringify({
-      success:true,
-      error: 'bar received',
-      data: venue
-    })
-  )
+
 })
 
 const PORT = 5000
