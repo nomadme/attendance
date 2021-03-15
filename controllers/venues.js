@@ -9,7 +9,7 @@ exports.getVenues = async (req, res, next) => {
     const venues = await Venue.find()
     res.status(200).json({success: true, count: venues.length, data: venues})
   } catch (e) {
-    res.status(400).json({success: false, message: e.message, data: []})
+    next(e)
   }
 }
 
@@ -19,13 +19,13 @@ exports.getVenues = async (req, res, next) => {
 exports.getVenue = async (req, res, next) => {
   try {
     const venue = await Venue.findById(req.params.id)
-    if (!venue) return next(new ErrorResponse('Venue does not exit', 404))
+
+    if (!venue) return next(new ErrorResponse('Venue does not exist', 404))
 
     res.status(200).json({success: true, message: `Listing venue id: ${req.params.id}`, data: venue})
   } catch (e) {
-    next(new ErrorResponse(e.message, 404))
+    next(e)
   }
-
 }
 
 // @desc    Create venue
@@ -37,7 +37,7 @@ exports.createVenue = async (req, res, next) => {
     const venue = await Venue.create(req.body)
     res.status(201).json({success: true, message: 'Created venue', data: venue})
   } catch (e) {
-    res.status(400).json({success: false, message: e.message, data: req.body})
+    next(e)
   }
 }
 
@@ -50,10 +50,12 @@ exports.updateVenue = async (req, res, next) => {
       new: true,
       runValidators: true
     })
-    if(!venue) return res.status(400).json({success: false, message: 'id provided, does not exist', data: []})
+
+    if(!venue) return next(new ErrorResponse('id provided, does not exist', 400))
+
     res.status(200).json({success: true, message: `Updated venue id: ${req.params.id}`, data: venue})
   } catch (e) {
-    res.status(400).json({success: true, message: e.message, data: req.body})
+    next(e)
   }
 }
 
@@ -63,9 +65,11 @@ exports.updateVenue = async (req, res, next) => {
 exports.deleteVenue = async (req, res, next) => {
   try {
     const venue = await Venue.findByIdAndDelete(req.params.id)
-    if(!venue) return res.status(400).json({success: false, message: 'id provided, does not exist', data: []})
+
+    if(!venue) return next(new ErrorResponse('id provided, does not exist', 400))
+
     res.status(200).json({success: true, message: `Deleted venue id: ${req.params.id}`})
   } catch (e) {
-    res.status(400).json({success: true, message: e.message, data: req.body})
+    next(e)
   }
 }
