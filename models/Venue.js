@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const slugify = require('slugify')
 
 const VenueSchema = new mongoose.Schema({
   name: {type: String, required: [true, 'Enter name'], unique: true, trim: true},
@@ -61,5 +62,11 @@ const VenueSchema = new mongoose.Schema({
     default: 'no-photo.jpg'
   }
 }, {timestamps: true})
+
+// Create slug from the name
+VenueSchema.pre('save', function (next) {
+  this.slug = slugify(this.name, {lower: true})
+  next()
+})
 
 module.exports = mongoose.model('Venue', VenueSchema)
