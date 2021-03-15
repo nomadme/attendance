@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const slugify = require('slugify')
+const geocoder = require('../utilities/geocoder')
 
 const VenueSchema = new mongoose.Schema({
   name: {type: String, required: [true, 'Enter name'], unique: true, trim: true},
@@ -66,6 +67,22 @@ const VenueSchema = new mongoose.Schema({
 // Create slug from the name
 VenueSchema.pre('save', function (next) {
   this.slug = slugify(this.name, {lower: true})
+  next()
+})
+
+// Geocode create location
+VenueSchema.pre('save', async function (next) {
+  const loc = await geocoder.geocode(this.address)
+  this.location = {
+    type: 'Point',
+    coordinates: [loc[0].longitude, loc[0].latitude],
+    formattedAddress: loc[0].formattedAddress,
+    street: loc[0].streetName,
+    city: loc[0].city,
+    state: loc[0].stateCode,
+    zipcode: loc[0].zipcode,
+    country: loc[0].countryCode
+  }
   next()
 })
 
