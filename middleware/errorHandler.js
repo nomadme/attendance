@@ -7,7 +7,7 @@ const errorHandler = (err, req, res, next) => {
   console.log(err.stack.red)
 
   // handle mongoose error
-  if (error.name === 'CastError') {
+  if (err.name === 'CastError') {
     const message = `Resource not found with the id of ${err.value}`
     error = new ErrorResponse(message, 404)
   }
