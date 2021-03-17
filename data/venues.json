@@ -1,7 +1,4 @@
 [{
-  "_id": {
-    "$oid": "604e39a14c64a739fe462981"
-  },
   "features": [],
   "photo": "no-photo.jpg",
   "name": "Agricenter Expo Center",
@@ -15,9 +12,6 @@
   "address": "100 Main Street, Tennessee, Memphis",
   "description": "Foo bar"
 },{
-  "_id": {
-    "$oid": "604e4de54c64a739fe462983"
-  },
   "features": [
     "on site suppport",
     "av equipment provided"
@@ -34,9 +28,6 @@
   "address": "100 Main Street, Albany, NY",
   "description": "Foo bar"
 },{
-  "_id": {
-    "$oid": "604eeb3fade05b15b53e867c"
-  },
   "features": [],
   "photo": "no-photo.jpg",
   "name": "Alliant Energy Center",
