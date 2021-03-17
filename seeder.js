@@ -22,8 +22,10 @@ const importData = async () => {
   try {
     await Venue.create(venues)
     console.log('import done'.green.inverse)
+    process.exit(0)
   } catch (e) {
     console.error(e)
+    process.exit(1)
   }
 }
 
@@ -32,7 +34,15 @@ const deleteData = async () => {
   try {
     await Venue.deleteMany()
     console.log('cleared database'.red.inverse)
+    process.exit(0)
   } catch (e) {
     console.error(e)
+    process.exit(1)
   }
+}
+
+if (process.argv[2] === '-i') {
+  importData()
+} else if (process.argv[2] === '-d') {
+  deleteData()
 }
