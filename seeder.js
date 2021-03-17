@@ -26,3 +26,13 @@ const importData = async () => {
     console.error(e)
   }
 }
+
+// delete data
+const deleteData = async () => {
+  try {
+    await Venue.deleteMany()
+    console.log('cleared database'.red.inverse)
+  } catch (e) {
+    console.error(e)
+  }
+}
