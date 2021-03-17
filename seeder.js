@@ -21,7 +21,7 @@ const venues = JSON.parse(fs.readFileSync(`${__dirname}/data/venues.json`, 'utf-
 const importData = async () => {
   try {
     await Venue.create(venues)
-    console.log('import done'.green.inverse)
+    console.log('import done...'.green.inverse)
     process.exit(0)
   } catch (e) {
     console.error(e)
@@ -33,7 +33,7 @@ const importData = async () => {
 const deleteData = async () => {
   try {
     await Venue.deleteMany()
-    console.log('cleared database'.red.inverse)
+    console.log('cleared database...'.red.inverse)
     process.exit(0)
   } catch (e) {
     console.error(e)
